@@ -1,14 +1,14 @@
 from typing import List, Optional
-from pydantic import BaseModel, Pedido, Produto
+from pydantic import BaseModel #Pedido, Produto
 
 class Usuario(BaseModel):
    id:Optional[str] = None
    nome:str
    telefone:str
    #senha:str 
-   minhas_vendas:List[Pedido]
-   meus_produtos:List[Produto]
-   meus_pedidos:List[Pedido]   
+#    minhas_vendas:List[Pedido]
+#    meus_produtos:List[Produto]
+#    meus_pedidos:List[Pedido]   
 
 class Produto(BaseModel):
     id:Optional[str]
@@ -16,7 +16,10 @@ class Produto(BaseModel):
     detalhamento:str
     preco:float
     disponivel:bool = False
-    usuario:Usuario
+    #usuario:Usuario
+
+    class Config:
+        orm_mode = True
 
 
 class Pedido(BaseModel):
@@ -24,8 +27,8 @@ class Pedido(BaseModel):
     quantidade:int
     endereco_entrega:str
     entrega:bool = True
-    usuario:Usuario
-    produto:Produto
+    # usuario:Usuario
+    # produto:Produto
     observacoes:Optional[str] = "Sem observações"
 
 

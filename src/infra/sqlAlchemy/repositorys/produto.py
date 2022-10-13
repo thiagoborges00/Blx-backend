@@ -1,4 +1,3 @@
-import pdb
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlAlchemy.models import models
@@ -26,3 +25,14 @@ class RepositorioProduto():
         ''' lista todos os produtos do banco '''
         produtos = self.db.query(models.Produto).all()
         return produtos
+
+    def remove(self, id:int):
+        '''remove o produto com o id passado por parametro'''
+        try:
+            produto = self.db.get(models.Produto,id)
+            self.db.delete(produto)
+            self.db.commit()
+        except:
+            return {"message":f"falha ao remover o cliente  de id {id}"}
+        return "excluido"
+

@@ -31,5 +31,8 @@ class Pedido(BaseModel):
     # produto:Produto
     observacoes:Optional[str] = "Sem observações"
 
+    class Config:
+        orm_mode = True
+
 
 

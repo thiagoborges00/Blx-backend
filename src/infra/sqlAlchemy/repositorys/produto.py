@@ -25,14 +25,16 @@ class RepositorioProduto():
         ''' lista todos os produtos do banco '''
         produtos = self.db.query(models.Produto).all()
         return produtos
+    
+    def pesquisar(self, id:int):
+        produto = self.db.get(models.Produto, id)
+        return {"data":produto, "detail":"ok"} if produto != None else {"detail":"produto naão encontrado"}
 
     def remove(self, id:int):
         '''remove o produto com o id passado por parametro'''
-        try:
-            produto = self.db.get(models.Produto,id)
-            self.db.delete(produto)
-            self.db.commit()
-        except:
-            return {"message":f"falha ao remover o cliente  de id {id}"}
-        return "excluido"
+        produto = self.db.get(models.Produto,id)
+        if produto is None : return {"detail":f"falha ao remover o cliente  de id {id}"}
+        self.db.delete(produto)
+        self.db.commit()
+        return {"detail":f"cliente  de id {id} removido com sucesso"}
 

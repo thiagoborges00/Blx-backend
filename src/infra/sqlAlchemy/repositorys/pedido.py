@@ -28,3 +28,20 @@ class RepositorioPedido():
         pedidos = self.db.query(Pedido).all()
         return pedidos
     
+
+    def pesquisar(self, id:int):
+        # try:
+        #     pedido = self.db.get(Pedido, id)
+        #     return pedido
+        # except:
+        #     return "erro"
+        pedido = self.db.get(Pedido, id)
+        return pedido
+
+    def remover(self, id:int):
+        pedido = self.pesquisar(id)
+        self.db.delete(pedido)
+        self.db.commit()
+        return "excluido"
+
+    

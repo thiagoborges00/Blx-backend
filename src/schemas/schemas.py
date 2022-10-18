@@ -2,7 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel #Pedido, Produto
 
 class Usuario(BaseModel):
-    id:Optional[str] = None
+    id:Optional[int] = None
     nome:str
     telefone:str
     senha:str 
@@ -22,7 +22,7 @@ class UsuarioDeletado(BaseModel):
         orm_mode = True
 
 class Produto(BaseModel):
-    id:Optional[str]
+    id:Optional[int]
     nome:str
     detalhamento:str
     preco:float
@@ -34,7 +34,7 @@ class Produto(BaseModel):
 
 
 class Pedido(BaseModel):
-    id:Optional[str]
+    id:Optional[int]
     quantidade:int
     endereco_entrega:str
     entrega:bool = True

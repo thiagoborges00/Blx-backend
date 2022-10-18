@@ -1,5 +1,6 @@
 
-from sqlalchemy import Boolean, Column, Float, Integer, String
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 from src.infra.sqlAlchemy.config.database import Base
 
 class Produto(Base):
@@ -11,6 +12,9 @@ class Produto(Base):
     preco = Column(Float)
     detalhamento = Column(String)
     disponivel = Column(Boolean)
+
+    usuario_id = Column(Integer, ForeignKey("usuario.id"), ondelete="CASCADE")
+    usuarios = relationship("Usuario", back_populates="produtos")
 
 
 class Pedido(Base):
@@ -34,4 +38,5 @@ class Usuario(Base):
     nome = Column(String) 
     senha = Column(String)
 
+    produtos = relationship("Produto", back_populates="usuarios", cascade="all, delete")
 

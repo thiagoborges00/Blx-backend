@@ -15,6 +15,9 @@ class Produto(Base):
     pedido_id = Column(Integer, ForeignKey("pedido.id"))
     pedido = relationship("Pedido", back_populates="produtos")
 
+    usuario_id = Column(Integer, ForeignKey("usuario.id"), ondelete="CASCADE")
+    usuarios = relationship("Usuario", back_populates="produtos")
+
 
 class Pedido(Base):
     
@@ -40,4 +43,5 @@ class Usuario(Base):
     nome = Column(String) 
     senha = Column(String)
 
+    produtos = relationship("Produto", back_populates="usuarios", cascade="all, delete")
 

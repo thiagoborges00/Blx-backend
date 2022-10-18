@@ -1,10 +1,12 @@
+from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import Depends, FastAPI, status
 from src.infra.sqlAlchemy.repositorys.pedido import RepositorioPedido
 from src.infra.sqlAlchemy.config.database import create_db, get_db
 from src.infra.sqlAlchemy.repositorys.produto import RepositorioProduto
-from src.schemas.schemas import Pedido, Produto
+from src.infra.sqlAlchemy.repositorys.usuario import RepositorioUsuario
+from src.schemas.schemas import Pedido, Produto, Usuario, UsuarioDeletado
 from sqlalchemy.orm import Session
 
 create_db()
@@ -58,3 +60,26 @@ def listar_pedidos(db:Session = Depends(get_db)):
 def cadastrar_pedido(pedido:Pedido, db:Session = Depends(get_db)):
     pedido = RepositorioPedido(db).cadastrar(pedido)
     return pedido
+
+#USUARIOS
+
+@app.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[Usuario])
+def listar_usuarios(db:Session = Depends(get_db)):
+    usuarios = RepositorioUsuario(db).listar()
+    return usuarios
+
+@app.post('/usuarios', status_code=status.HTTP_201_CREATED, response_model=Usuario)
+def cadastrar_usuario(user:Usuario, db:Session = Depends(get_db)):
+    novo_usuario = RepositorioUsuario(db).criar(user)
+    return novo_usuario
+
+@app.delete('/usuarios/{id}', status_code=status.HTTP_200_OK, response_model=UsuarioDeletado)
+def remover_usuario(id:int, db:Session = Depends(get_db)):
+    deletado = RepositorioUsuario(db).remover(id)
+    return deletado
+
+@app.get('/usuarios/{id}',status_code=status.HTTP_200_OK, response_model=Usuario)
+def pesquisar_usuario(id:int, db:Session = Depends(get_db)):
+    usuario = RepositorioUsuario(db).pesquisar(id)
+    if not usuario : return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"usuário não encontrado"})
+    return usuario

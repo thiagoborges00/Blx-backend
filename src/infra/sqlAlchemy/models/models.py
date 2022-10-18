@@ -25,9 +25,13 @@ class Pedido(Base):
 
 
 
-# class Usuario(Base):
-#     __tablename__ = usuario
-#     pass
+class Usuario(Base):
+   
+    __tablename__ = 'usuario'
 
+    id = Column(Integer, primary_key=True, index=True)
+    telefone = Column(String)
+    nome = Column(String) 
+    senha = Column(String)
 
 

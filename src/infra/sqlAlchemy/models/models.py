@@ -31,17 +31,13 @@ class Pedido(Base):
     produtos = relationship("Produto", back_populates="pedido")
 
 
-
 class Usuario(Base):
-
+   
     __tablename__ = 'usuario'
-    
+
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
     telefone = Column(String)
+    nome = Column(String) 
     senha = Column(String)
-    pedidos = relationship("Pedido", back_populates="usuario_id")
-
-
 
 

@@ -2,13 +2,24 @@ from typing import List, Optional
 from pydantic import BaseModel #Pedido, Produto
 
 class Usuario(BaseModel):
-   id:Optional[str] = None
-   nome:str
-   telefone:str
-   #senha:str 
+    id:Optional[str] = None
+    nome:str
+    telefone:str
+    senha:str 
 #    minhas_vendas:List[Pedido]
 #    meus_produtos:List[Produto]
-#    meus_pedidos:List[Pedido]   
+#    meus_pedidos:List[Pedido]  
+    class Config:
+        orm_mode = True
+
+
+class UsuarioDeletado(BaseModel):
+    msg:str = "usuario deletado com sucesso"
+    id:str
+    nome:str
+   
+    class Config:
+        orm_mode = True
 
 class Produto(BaseModel):
     id:Optional[str]

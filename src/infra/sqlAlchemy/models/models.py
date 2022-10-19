@@ -13,7 +13,7 @@ class Produto(Base):
     detalhamento = Column(String)
     disponivel = Column(Boolean)
 
-    usuario_id = Column(Integer, ForeignKey("usuario.id"), ondelete="CASCADE")
+    usuario_id = Column(Integer, ForeignKey("usuario.id", ondelete="CASCADE"))
     usuarios = relationship("Usuario", back_populates="produtos")
 
 

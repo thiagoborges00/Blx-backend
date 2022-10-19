@@ -6,6 +6,7 @@ class Usuario(BaseModel):
     nome:str
     telefone:str
     senha:str 
+    #produtos:Optional[Produto]
 #    minhas_vendas:List[Pedido]
 #    meus_produtos:List[Produto]
 #    meus_pedidos:List[Pedido]  
@@ -27,7 +28,8 @@ class Produto(BaseModel):
     detalhamento:str
     preco:float
     disponivel:bool = False
-    #usuario:Usuario
+    usuario_id:int
+    usuarios:Optional[Usuario] # campo utilizado para mostrar detalhes do relacionamento na listagem
 
     class Config:
         orm_mode = True

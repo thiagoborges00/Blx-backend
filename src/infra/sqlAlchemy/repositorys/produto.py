@@ -9,11 +9,11 @@ class RepositorioProduto():
     
     def criar(self, produto:schemas.Produto):
         '''pega a modelagem do produto(schema) e transforma em um objeto do modelo produto que vai pro banco '''
-        #pdb.set_trace()
         db_produto = models.Produto(nome=produto.nome,
             detalhamento=produto.detalhamento,
             preco = produto.preco,
-            disponivel=produto.disponivel,)
+            disponivel=produto.disponivel,
+            usuario_id=produto.usuario_id)
             #usuario:Usuario)
         
         self.db.add(db_produto)

@@ -21,7 +21,7 @@ def cadastrar_produto(produto:Produto, db:Session = Depends(get_db)):
     produto_criado = RepositorioProduto(db).criar(produto)
     return produto_criado
 
-@app.get('/produtos')
+@app.get('/produtos', response_model=List[Produto])
 def listar_produtos(db:Session = Depends(get_db)):
     produtos = RepositorioProduto(db).listar()
     return produtos
@@ -39,7 +39,7 @@ def listar_produtos(db:Session = Depends(get_db)):
     summary ="Deletar Produtos",)
 def remover_produto(id:int, db:Session = Depends(get_db)):
     produto = RepositorioProduto(db).remove(id)
-    if produto["detail"] == f'cliente  de id {id} removido com sucesso':
+    if produto["detail"] == f'produto  de id {id} removido com sucesso':
         return JSONResponse(status_code=status.HTTP_200_OK, content=produto)
     return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=produto)
 

@@ -1,12 +1,22 @@
 from typing import List, Optional
-from pydantic import BaseModel #Pedido, Produto
+from pydantic import BaseModel
+
+
+class ProdutoSimples(BaseModel):
+    id:int
+    nome:str
+    detalhamento:str
+
+    class Config:
+        orm_mode = True
+
 
 class Usuario(BaseModel):
     id:Optional[int] = None
     nome:str
     telefone:str
     senha:str 
-    #produtos:Optional[Produto]
+    produtos:List[ProdutoSimples] = []
 #    minhas_vendas:List[Pedido]
 #    meus_produtos:List[Produto]
 #    meus_pedidos:List[Pedido]  
@@ -14,13 +24,22 @@ class Usuario(BaseModel):
         orm_mode = True
 
 
-class UsuarioDeletado(BaseModel):
+class UsuarioResponse(BaseModel):
+    id:str
+    nome:str
+   
+    class Config:
+        orm_mode = True
+
+
+class UsuarioSimples(BaseModel):
     msg:str = "usuario deletado com sucesso"
     id:str
     nome:str
    
     class Config:
         orm_mode = True
+
 
 class Produto(BaseModel):
     id:Optional[int]
@@ -29,7 +48,7 @@ class Produto(BaseModel):
     preco:float
     disponivel:bool = False
     usuario_id:int
-    usuarios:Optional[Usuario] # campo utilizado para mostrar detalhes do relacionamento na listagem
+    usuarios:Optional[UsuarioResponse] # campo utilizado para mostrar detalhes do relacionamento na listagem
 
     class Config:
         orm_mode = True
@@ -46,6 +65,3 @@ class Pedido(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-

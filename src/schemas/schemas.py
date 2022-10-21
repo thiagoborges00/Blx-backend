@@ -6,6 +6,7 @@ class ProdutoSimples(BaseModel):
     id:int
     nome:str
     detalhamento:str
+    preco:float
 
     class Config:
         orm_mode = True
@@ -47,7 +48,7 @@ class Produto(BaseModel):
     detalhamento:str
     preco:float
     disponivel:bool = False
-    usuario_id:int
+    usuario_id:Optional[int]
     usuarios:Optional[UsuarioResponse] # campo utilizado para mostrar detalhes do relacionamento na listagem
 
     class Config:

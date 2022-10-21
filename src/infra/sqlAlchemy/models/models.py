@@ -16,6 +16,9 @@ class Produto(Base):
     usuario_id = Column(Integer, ForeignKey("usuario.id", ondelete="CASCADE"))
     usuarios = relationship("Usuario", back_populates="produtos")
 
+    def __repr__(self):
+        return f'Produto(nome={self.nome}, id={self.id}, preco={self.preco}, detalhamento={self.detalhamento})'
+
 
 class Pedido(Base):
     
@@ -26,6 +29,9 @@ class Pedido(Base):
     endereco_entrega = Column(String)
     observacoes = Column(String)
     entrega = Column(Boolean, default=True)
+
+    def __repr__(self):
+        return f'Pedido(id={self.id}, quantidade={self.quantidade})'
 
 
 
@@ -40,3 +46,5 @@ class Usuario(Base):
 
     produtos = relationship("Produto", back_populates="usuarios", cascade="all, delete")
 
+    def __repr__(self):
+        return f'Usuario(nome={self.nome}, id={self.nome}, tel={self.telefone}, senha={self.senha})'

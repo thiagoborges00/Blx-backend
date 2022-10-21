@@ -43,16 +43,15 @@ class RepositorioProduto():
         return produto
 
 
-    def atualizar(self, produto:schemas.Produto):
+    def atualizar(self, id:int, produto:schemas.Produto):
         '''atualiza um produto atravez de um produto enviado por parametro'''
-        existe = self.pesquisar(produto.id)
+        existe = self.pesquisar(id)
         if existe:
-            update_stmt = update(models.Produto).where(models.Produto.id == produto.id).values(
+            update_stmt = update(models.Produto).where(models.Produto.id == id).values(
                 nome=produto.nome,
                 detalhamento=produto.detalhamento,
                 preco = produto.preco,
                 disponivel=produto.disponivel,
-                usuario_id=produto.usuario_id
             )
             self.db.execute(update_stmt)
             self.db.commit()

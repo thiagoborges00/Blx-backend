@@ -38,7 +38,7 @@ def listar_produtos(db:Session = Depends(get_db)):
         "description":"produto não encontrado",
     },
     422:{
-        "description":"erro de validação(url ou parametros)"
+        "description":"erro de validação nos parametros"
     },},
     summary ="Deletar Produtos", response_model=Produto)
 def remover_produto(id:int, db:Session = Depends(get_db)):
@@ -56,9 +56,9 @@ def pesquisar_produto(id:int, db:Session = Depends(get_db)):
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(produto))
 
 
-@app.put('/produtos')
-def atualizar_produto(produto:Produto,  db:Session = Depends(get_db)):
-    produto_atualizado = RepositorioProduto(db).atualizar(produto)
+@app.put('/produtos/{id}')
+def atualizar_produto(produto:Produto, id:int, db:Session = Depends(get_db)):
+    produto_atualizado = RepositorioProduto(db).atualizar(id=id,produto=produto)
     if produto_atualizado is None: 
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"produto não encontrado"})
     return JSONResponse(status_code=status.HTTP_200_OK, content={"detail":"produto atualizado"})

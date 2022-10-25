@@ -68,7 +68,7 @@ class TestCadastrarProduto:
     def test_cadastrar_produto_feliz(self):
         '''teste de cadastro de produto do caminho feliz'''
         response = app_test.post('/produtos', json=produto_ok, )
-        assert response.status_code == HTTPStatus.OK
+        assert response.status_code == HTTPStatus.CREATED
 
 
     def test_cadastrar_produto_url_errada(self):
@@ -179,4 +179,78 @@ class TestUpdateProduto:
         resposta = app_test.put('/produtos/687', json=produto_ok)
         assert resposta.status_code == HTTPStatus.NOT_FOUND
         assert resposta.json() == {"detail":"produto não encontrado"}
-         
+        
+
+class TestListarPedido:
+
+    def test_listar_produto():
+        '''listando produtos pelo caminho felizzzzz'''
+        pass
+
+
+
+class TestCadastrarUsuario:
+
+    novo_usuario = {
+                    "nome":"Yamori",
+                    "telefone":"8698876-1501",
+                    "senha":"121jaosoai88"
+                    }
+    
+    usuario_err = {
+                    "nome":"Mashida",
+                    "tel":"8694476-1501",
+                    "senha":"--jaosoai88"
+                    }
+
+    def test_cadastrar_usuario(self):
+        '''teste de cadastro de usuario no caminho feliz'''
+        resposta = app_test.post('/usuarios', json=self.novo_usuario)
+        assert resposta.status_code == HTTPStatus.CREATED
+        
+
+    def test_cadastrar_usuario_url_errada(self):
+        '''teste de cadastro de usuario com url errada'''
+        resposta = app_test.post('/usuario', json=self.novo_usuario)
+        assert resposta.status_code == HTTPStatus.NOT_FOUND
+
+
+    def test_cadastrar_usuario_payload_errado(self):
+        '''teste de cadastro enviando payload errado'''
+        resposta = app_test.post('/usuarios', json=self.usuario_err)
+        assert resposta.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+
+
+class TestListarUsuario:
+
+    def test_listar_usuarios(self):
+        '''teste de listagem de usuarios no caminho feliz'''
+        resposta  = app_test.get('/usuarios')
+        assert resposta.status_code == HTTPStatus.OK
+ 
+
+    def test_listar_usuario_url_errada(self):
+        '''teste de listagem de usuarios com url errada'''
+        resposta = app_test.get('/usuario')
+        assert resposta.status_code == HTTPStatus.NOT_FOUND
+
+
+class TestPesquisarUsuario:
+
+    def test_pesquisar_usuario(self):
+        '''teste de pesquisa de usuario pelo caminho feliz'''
+        resposta = app_test.get('/usuarios/5')
+        assert resposta.status_code == HTTPStatus.OK
+
+    
+    def test_pesquisar_usuario_url_errada(self):
+        '''teste de pesquisa de usuario com url errada'''
+        resposta  = app_test.get('/usuario/4')
+        assert resposta.status_code == HTTPStatus.NOT_FOUND
+
+    
+    # def test_pesquisar_usuario_id_invalido(self):
+    #     '''teste de pesquisa de usuario com id nao numerico'''
+    #     resposta = app_test.get('/usuarios/#77at')
+    #     #assert resposta.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+    #     assert resposta.json() == {}

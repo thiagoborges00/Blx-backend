@@ -1,3 +1,4 @@
+import pdb
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -13,7 +14,24 @@ from sqlalchemy.orm import Session
 app = FastAPI()
 
 #PRODUTOS
-@app.post('/produtos')
+@app.post('/produtos',tags=["Produtos"], status_code=status.HTTP_201_CREATED,
+# responses={
+#     201:{
+#         "description":"Produto cadastrado com sucesso",
+#         "content":{
+#             "application/json":{
+#                 "example":{
+#                     "nome":"pizza",
+#                     "detalhamento":"sabor carne de sol com banana tamanho GG",
+#                     "preco":63.50,
+#                     "disponivel":True,
+#                     "usuario_id":2
+#                 }
+#             }
+#         }
+#     }
+# }
+)
 def cadastrar_produto(produto:Produto, db:Session = Depends(get_db)):
     '''para cadastrar o produto a funcao recebe a sessao do banco 
     e o produto em si, e retorna o produto cadastrado'''
@@ -24,22 +42,28 @@ def cadastrar_produto(produto:Produto, db:Session = Depends(get_db)):
     return produto_criado
 
 
-@app.get('/produtos',response_model=List[Produto])
+@app.get('/produtos', tags=["Produtos"], response_model=List[Produto], )
 def listar_produtos(db:Session = Depends(get_db)):
     produtos = RepositorioProduto(db).listar()
     return produtos
 
 
-@app.delete('/produtos/{id}', responses={
-    200:{
-        "description":"remoção com sucesso",
-    },
+@app.delete('/produtos/{id}', tags=["Produtos"], responses={
+    # 200:{
+    #     "description":"remoção com sucesso",
+    #     "content":{
+    #         "application/json":{
+    #             "example":"xxxxx"
+    #         }
+    #     }
+    # },
     404:{
         "description":"produto não encontrado",
     },
-    422:{
-        "description":"erro de validação nos parametros"
-    },},
+    # 422:{
+    #     "description":"erro de validação nos parametros"
+    # },
+    },
     summary ="Deletar Produtos", response_model=Produto)
 def remover_produto(id:int, db:Session = Depends(get_db)):
     produto = RepositorioProduto(db).remove(id)
@@ -48,7 +72,7 @@ def remover_produto(id:int, db:Session = Depends(get_db)):
     return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"Produto não encontrado"})
 
 
-@app.get('/produtos/{id}')
+@app.get('/produtos/{id}', tags=["Produtos"])
 def pesquisar_produto(id:int, db:Session = Depends(get_db)):
     produto = RepositorioProduto(db).pesquisar(id)
     if produto is None:
@@ -56,7 +80,7 @@ def pesquisar_produto(id:int, db:Session = Depends(get_db)):
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(produto))
 
 
-@app.put('/produtos/{id}')
+@app.put('/produtos/{id}', tags=["Produtos"])
 def atualizar_produto(produto:Produto, id:int, db:Session = Depends(get_db)):
     produto_atualizado = RepositorioProduto(db).atualizar(id=id,produto=produto)
     if produto_atualizado is None: 
@@ -66,39 +90,40 @@ def atualizar_produto(produto:Produto, id:int, db:Session = Depends(get_db)):
 
 
 #PEDIDOS
-@app.get('/pedidos')
+@app.get('/pedidos', tags=["Pedidos"])
 def listar_pedidos(db:Session = Depends(get_db)):
     pedidos = RepositorioPedido(db).listar()
     return pedidos
 
 
-@app.post('/pedidos')
+@app.post('/pedidos', tags=["Pedidos"])
 def cadastrar_pedido(pedido:Pedido, db:Session = Depends(get_db)):
     pedido = RepositorioPedido(db).cadastrar(pedido)
     return pedido
 
 
 #USUARIOS
-@app.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[Usuario])
+@app.get('/usuarios', tags=["Usuarios"], status_code=status.HTTP_200_OK, response_model=List[Usuario])
 def listar_usuarios(db:Session = Depends(get_db)):
     usuarios = RepositorioUsuario(db).listar()
     return usuarios
 
 
-@app.post('/usuarios', status_code=status.HTTP_201_CREATED, response_model=Usuario)
+@app.post('/usuarios', tags=["Usuarios"], status_code=status.HTTP_201_CREATED, response_model=Usuario)
 def cadastrar_usuario(user:Usuario, db:Session = Depends(get_db)):
     novo_usuario = RepositorioUsuario(db).criar(user)
     return novo_usuario
 
 
-@app.delete('/usuarios/{id}', status_code=status.HTTP_200_OK, response_model=UsuarioSimples)
+@app.delete('/usuarios/{id}', tags=["Usuarios"], status_code=status.HTTP_200_OK, response_model=UsuarioSimples)
 def remover_usuario(id:int, db:Session = Depends(get_db)):
     deletado = RepositorioUsuario(db).remover(id)
     return deletado
 
 
-@app.get('/usuarios/{id}',status_code=status.HTTP_200_OK, response_model=Usuario)
+@app.get('/usuarios/{id}', tags=["Usuarios"], status_code=status.HTTP_200_OK, response_model=Usuario)
 def pesquisar_usuario(id:int, db:Session = Depends(get_db)):
+    pdb.set_trace()
     usuario = RepositorioUsuario(db).pesquisar(id)
     if not usuario : return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"usuário não encontrado"})
     return usuario

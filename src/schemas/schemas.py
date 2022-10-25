@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class ProdutoSimples(BaseModel):
@@ -51,8 +51,24 @@ class Produto(BaseModel):
     usuario_id:Optional[int]
     usuarios:Optional[UsuarioResponse] # campo utilizado para mostrar detalhes do relacionamento na listagem
 
+
+    # @validator('preco')
+    # def id_valid(cls, v):
+    #     pdb.set_trace()
+    #     if v is not float:
+    #         raise ValueError('parametro real não informado')
+
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "nome": "Pizza",
+                "detalhamento": "pizza de carne de sol com banana no tamanho GG",
+                "preco": 65.4,
+                "disponivel": True,
+                "usuario_id": 4 
+            }
+        }
 
 
 class Pedido(BaseModel):

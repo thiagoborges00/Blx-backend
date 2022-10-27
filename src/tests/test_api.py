@@ -254,3 +254,36 @@ class TestPesquisarUsuario:
     #     resposta = app_test.get('/usuarios/#77at')
     #     #assert resposta.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
     #     assert resposta.json() == {}
+    # fazer a validação dos campos dos models {serializers}
+    
+
+    def test_pesquisar_usuario_id_n_cadastrado(self):
+        '''teste de pesquisa de usuario inexistente'''
+        resposta = app_test.get('/usuarios/8800')
+        assert resposta.status_code == HTTPStatus.NOT_FOUND
+
+
+class TestRemoverUsuario:
+    
+    def test_remover_usuario(self):
+        '''teste de remocao de usuario no caminho feliz'''
+        resposta = app_test.delete('/usuarios/6')
+        assert resposta.status_code == HTTPStatus.OK
+
+    
+    def test_remover_usuario_id_invalido(self):
+        '''teste de remocao de usuario com id invalido'''
+        resposta = app_test.delete('/usuarios/a14s')
+        assert resposta.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+
+    
+    def test_remover_usuario_id_n_cadastrado(self):
+        '''teste de remocao de usuario com id nao cadastrado'''
+        resposta = app_test.delete('/usuarios/9874')
+        assert resposta.status_code == HTTPStatus.NOT_FOUND
+
+
+    def test_remover_usuario_url_errada(self):
+        '''teste de remocao de usuario com url errada'''
+        resposta = app_test.delete('/usuario-raiz/4')
+        assert resposta.status_code == HTTPStatus.NOT_FOUND

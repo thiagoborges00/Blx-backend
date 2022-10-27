@@ -1,8 +1,7 @@
-import pdb
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from fastapi import Depends, FastAPI, status
+from fastapi import Depends, FastAPI, Path, status
 from src.infra.sqlAlchemy.repositorys.pedido import RepositorioPedido
 from src.infra.sqlAlchemy.config.database import create_db, get_db
 from src.infra.sqlAlchemy.repositorys.produto import RepositorioProduto
@@ -116,14 +115,14 @@ def cadastrar_usuario(user:Usuario, db:Session = Depends(get_db)):
 
 
 @app.delete('/usuarios/{id}', tags=["Usuarios"], status_code=status.HTTP_200_OK, response_model=UsuarioSimples)
-def remover_usuario(id:int, db:Session = Depends(get_db)):
+def remover_usuario(id:int = Path(..., ge=1), db:Session = Depends(get_db)):
     deletado = RepositorioUsuario(db).remover(id)
+    if deletado is None: return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"usuário não encontrado"})
     return deletado
 
 
 @app.get('/usuarios/{id}', tags=["Usuarios"], status_code=status.HTTP_200_OK, response_model=Usuario)
-def pesquisar_usuario(id:int, db:Session = Depends(get_db)):
-    pdb.set_trace()
+def pesquisar_usuario(id:int = Path(..., title="identificador único",ge=1) , db:Session = Depends(get_db)):
     usuario = RepositorioUsuario(db).pesquisar(id)
     if not usuario : return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail":"usuário não encontrado"})
     return usuario

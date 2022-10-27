@@ -55,8 +55,16 @@ class Produto(BaseModel):
     # @validator('preco')
     # def id_valid(cls, v):
     #     pdb.set_trace()
-    #     if v is not float:
+    #     if not isinstance(v, float):
     #         raise ValueError('parametro real não informado')
+
+    # @validator('usuario_id')
+    # def user_id_valid(cls, v):
+    #     if not isinstance(v, int):
+    #         raise ValueError('não é um inteiro')
+    #     return v
+
+
 
     class Config:
         orm_mode = True

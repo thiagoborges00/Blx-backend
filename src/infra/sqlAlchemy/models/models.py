@@ -21,6 +21,12 @@ class Produto(Base):
     def __repr__(self):
         return f'Produto(nome={self.nome}, id={self.id}, preco={self.preco}, detalhamento={self.detalhamento})'
 
+    usuario_id = Column(Integer, ForeignKey("usuario.id", ondelete="CASCADE"))
+    usuarios = relationship("Usuario", back_populates="produtos")
+
+    def __repr__(self):
+        return f'Produto(nome={self.nome}, id={self.id}, preco={self.preco}, detalhamento={self.detalhamento})'
+
 
 class Pedido(Base):
     
